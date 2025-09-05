@@ -1,5 +1,7 @@
 package com.example.BuilderTemplateSecurity.controller;
 
+import com.example.BuilderTemplateSecurity.dto.LoginRequest;
+import com.example.BuilderTemplateSecurity.dto.LoginResponse;
 import com.example.BuilderTemplateSecurity.dto.RegisterRequest;
 import com.example.BuilderTemplateSecurity.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +23,10 @@ public class AuthenticationController {
     public ResponseEntity<String> register(@Validated @RequestBody RegisterRequest registerRequest){
         authenticationService.register(registerRequest);
         return ResponseEntity.ok("register successful!!");
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<LoginResponse> authenticate(@Validated @RequestBody LoginRequest loginRequest){
+        return ResponseEntity.ok(authenticationService.authenticate(loginRequest));
     }
 }
