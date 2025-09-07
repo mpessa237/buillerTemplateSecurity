@@ -1,5 +1,6 @@
 package com.example.BuilderTemplateSecurity.configuration;
 
+import com.example.BuilderTemplateSecurity.repository.RevokedTokenRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
+    private final RevokedTokenRepo revokedTokenRepo;
 
     @Override
     protected void doFilterInternal(
@@ -39,6 +41,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
+
+        // NOUVEAU: Vérification de la liste noire
+        if (revokedTokenRepo.findByToken(jwt).isPresent()){
+            // Le token est dans la liste noire, ne pas autoriser l'accès
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("token has been revoked");
+            return;
+        }
         if (userEmail !=null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             if (jwtService.isTokenValid(jwt,userDetails)){
