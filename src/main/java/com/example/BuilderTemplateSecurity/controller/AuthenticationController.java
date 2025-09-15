@@ -4,6 +4,7 @@ import com.example.BuilderTemplateSecurity.dto.LoginRequest;
 import com.example.BuilderTemplateSecurity.dto.LoginResponse;
 import com.example.BuilderTemplateSecurity.dto.RegisterRequest;
 import com.example.BuilderTemplateSecurity.service.AuthenticationService;
+import com.example.BuilderTemplateSecurity.service.LoginService;
 import com.example.BuilderTemplateSecurity.service.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final LogoutService logoutService;
+    private final LoginService loginService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Validated @RequestBody RegisterRequest registerRequest){
@@ -30,7 +32,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<LoginResponse> authenticate(@Validated @RequestBody LoginRequest loginRequest){
-        return ResponseEntity.ok(authenticationService.authenticate(loginRequest));
+        return ResponseEntity.ok(loginService.authenticate(loginRequest));
     }
 
     @PostMapping("/logout")

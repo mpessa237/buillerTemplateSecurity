@@ -30,9 +30,7 @@ public class AuthenticationService {
         if (userRepo.findByEmail(registerRequest.getEmail()).isPresent()){
             throw new IllegalArgumentException("Email already registered");
         }
-
         //entre les infos du user
-
         User user = new User();
         user.setFirstname(registerRequest.getFirstname());
         user.setLastname(registerRequest.getLastname());
@@ -45,24 +43,4 @@ public class AuthenticationService {
         userRepo.save(user);
     }
 
-    public LoginResponse authenticate(LoginRequest loginRequest){
-        // Authentifier l'utilisateur en utilisant le gestionnaire d'authentification de Spring.
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
-        var user = userRepo.findByEmail(loginRequest.getEmail())
-                .orElseThrow(()-> new IllegalArgumentException("user not found!!"));
-
-        //gerer le token
-        var accessToken = jwtService.generateAccessToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setAccessToken(accessToken);
-        loginResponse.setRefreshToken(refreshToken);
-        return loginResponse;
-    }
 }

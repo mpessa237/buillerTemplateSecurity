@@ -33,6 +33,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Announcement> announcements ;
+
+    public User(String john, String doe, String mail, String password) {
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.role
