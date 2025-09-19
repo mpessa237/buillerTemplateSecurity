@@ -34,6 +34,7 @@ public class User implements UserDetails {
     private Set<Role> role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JsonManagedReference
     private List<Announcement> announcements ;
 
     public User(String john, String doe, String mail, String password) {

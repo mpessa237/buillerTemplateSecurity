@@ -1,15 +1,12 @@
 package com.example.BuilderTemplateSecurity.service;
 
 import com.example.BuilderTemplateSecurity.configuration.JwtService;
-import com.example.BuilderTemplateSecurity.dto.LoginRequest;
-import com.example.BuilderTemplateSecurity.dto.LoginResponse;
 import com.example.BuilderTemplateSecurity.dto.RegisterRequest;
 import com.example.BuilderTemplateSecurity.entity.Role;
 import com.example.BuilderTemplateSecurity.entity.User;
 import com.example.BuilderTemplateSecurity.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +18,6 @@ public class AuthenticationService {
 
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager ;
-
 
     public void register(RegisterRequest registerRequest){
         // verifier si user exist deja
@@ -36,7 +30,7 @@ public class AuthenticationService {
         user.setLastname(registerRequest.getLastname());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(Set.of(Role.USER));
+        user.setRole(Set.of(Role.ADMIN));
         user.setEnabled(true);
         user.setAccountLocked(false);
 

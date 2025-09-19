@@ -16,12 +16,16 @@ public class AnnouncementMapper {
         announcement.setCity(announcementReqDTO.getCity());
         announcement.setImgUrl(announcementReqDTO.getImgUrl());
         announcement.setPrice(announcementReqDTO.getPrice());
+        announcement.setPropertyType(announcementReqDTO.getPropertyType());
         announcement.setTypeAnnouncement(announcementReqDTO.getTypeAnnouncement());
 
         return announcement;
     }
 
     public AnnouncementRespDTO toDto(Announcement announcement){
+        if (announcement==null){
+            return null;
+        }
         AnnouncementRespDTO announcementRespDTO = new AnnouncementRespDTO();
         announcementRespDTO.setAnnouncementId(announcement.getAnnouncementId());
         announcementRespDTO.setTitle(announcement.getTitle());
@@ -29,8 +33,13 @@ public class AnnouncementMapper {
         announcementRespDTO.setNeighborhood(announcement.getNeighborhood());
         announcementRespDTO.setCity(announcement.getCity());
         announcementRespDTO.setImgUrl(announcement.getImgUrl());
+        announcementRespDTO.setPropertyType(announcement.getPropertyType());
         announcementRespDTO.setPrice(announcement.getPrice());
         announcementRespDTO.setTypeAnnouncement(announcement.getTypeAnnouncement());
+
+        if (announcement.getUser() !=null){
+            announcementRespDTO.setUserName(announcement.getUser().getFirstname() + " " + announcement.getUser().getLastname());
+        }
 
         return announcementRespDTO;
 
